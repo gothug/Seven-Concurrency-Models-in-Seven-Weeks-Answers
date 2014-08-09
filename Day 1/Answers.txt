@@ -1,0 +1,28 @@
+﻿? Check out William Pugh's Java memory model website.
+    http://www.cs.umd.edu/~pugh/java/memoryModel/
+    
+? Acquaint yourself with the JSR 133 (Java memory model) FAQ.
+
+http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html - although a bit outdated (e.g. C++ memory model - http://stackoverflow.com/questions/6319146/c11-introduced-a-standardized-memory-model-what-does-it-mean-and-how-is-it-g )
+
+
+? What guarantees does the Java memory model make regarding initialization safety? Is it always necessary to use locks to safely publish objects between threads?
+
+http://stackoverflow.com/questions/11306032/please-explain-initialization-safety-as-spelled-out-in-java-memory-model
+
+
+? What is the double-checked locking anti-pattern? Why is it an anti-pattern?
+
+http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+
+? Experiment with the original, broken “dining philosophers” example. Try
+modifying the length of time that philosophers think and eat and the
+number of philosophers. What effect does this have on how long it takes
+until deadlock? Imagine that you were trying to debug this and wanted
+to increase the likelihood of reproducing the deadlock—what would you
+do?
+
+- Putting a sleep between the 2 synchronized blocks, pretty much guarantees deadlock very quickly. 
+- Reducing the sleep time helps increase the probability of deadlock within a space of time
+- Increase likelihood - increase time spent between acquiring locks
+
