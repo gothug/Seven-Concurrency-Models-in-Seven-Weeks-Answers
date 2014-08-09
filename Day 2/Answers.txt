@@ -1,0 +1,63 @@
+? ReentrantLock supports a fairness parameter. What does it mean for a lock to be “fair”? Why might you choose to use a fair lock? Why might you not?
+ 
+From documentation:
+  * <p>The constructor for this class accepts an optional
+ * <em>fairness</em> parameter.  When set {@code true}, under
+ * contention, locks favor granting access to the longest-waiting
+ * thread.  Otherwise this lock does not guarantee any particular
+ * access order.  Programs using fair locks accessed by many threads
+ * may display lower overall throughput (i.e., are slower; often much
+ * slower) than those using the default setting, but have smaller
+ * variances in times to obtain locks and guarantee lack of
+ * starvation. Note however, that fairness of locks does not guarantee
+ * fairness of thread scheduling. Thus, one of many threads using a
+ * fair lock may obtain it multiple times in succession while other
+ * active threads are not progressing and not currently holding the
+ * lock.
+ * Also note that the untimed {@link #tryLock()} method does not
+ * honor the fairness setting. It will succeed if the lock
+ * is available even if other threads are waiting
+ 
+? What is ReentrantReadWriteLock? How does it differ from ReentrantLock? When might you use it?
+
+From http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/ReadWriteLock.html : 
+
+A ReadWriteLock maintains a pair of associated locks, one for read-only operations and one for writing. The read lock may be held simultaneously by multiple reader threads, so long as there are no writers. The write lock is exclusive.
+
+A read-write lock allows for a greater level of concurrency in accessing shared data than that permitted by a mutual exclusion lock. It exploits the fact that while only a single thread at a time (a writer thread) can modify the shared data, in many cases any number of threads can concurrently read the data (hence reader threads). In theory, the increase in concurrency permitted by the use of a read-write lock will lead to performance improvements over the use of a mutual exclusion lock. In practice this increase in concurrency will only be fully realized on a multi-processor, and then only if the access patterns for the shared data are suitable.
+
+? What is a “spurious wakeup”? When can one happen and why doesn’t a well-written program care if one does?
+http://en.wikipedia.org/wiki/Spurious_wakeup: 
+Even after a condition variable appears to have been signaled from a waiting thread's point of view, the condition that was awaited may still be false. One of the reasons for this is a spurious wakeup; that is, a thread might be awoken from its waiting state even though no thread signaled the condition variable. For correctness it is necessary, then, to verify that the condition is indeed true after the thread has finished waiting. Because spurious wakeup can happen repeatedly, this is achieved by waiting inside a loop that terminates when the condition is true.
+
+A Linux process is signaled its waiting threads will each enjoy a nice, hot spurious wakeup.
+
+
+? What is AtomicIntegerFieldUpdater? How does it differ from AtomicInteger? When might you use it?
+
+ * A reflection-based utility that enables atomic updates to
+ * designated {@code volatile int} fields of designated classes.
+ * This class is designed for use in atomic data structures in which
+ * several fields of the same node are independently subject to atomic
+ * updates.
+ 
+Lighter than AtomicInteger if there are very few writers and lots of readers. Can also do more than just increment decrement etc...
+
+
+? What would happen if the loop within the “dining philosophers” implementation
+that uses condition variables was replaced with a simple if statement?
+What failure modes might you see? What would happen if the call to signal()
+was replaced by signalAll()? What problems (if any) would this cause?
+
+? What would happen if the loop within the “dining philosophers” implementation
+that uses condition variables was replaced with a simple if statement?
+What failure modes might you see? What would happen if the call to signal()
+was replaced by signalAll()? What problems (if any) would this cause?
+
+* Makes it non-thread safe (as shown in my example). Even changing it to an if statement, without spurious wakeups breaks it! SignallAll() would only break make it more likely to void the critical section
+
+? Just as intrinsic locks are more limited than ReentrantLock, they also support
+a more limited type of condition variable. Rewrite the dining philosophers
+to use an intrinsic lock plus the wait() and notify() or notifyAll() methods. Why
+is it less efficient than using ReentrantLock?
+

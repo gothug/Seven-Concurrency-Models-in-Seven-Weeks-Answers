@@ -26,3 +26,13 @@ do?
 - Reducing the sleep time helps increase the probability of deadlock within a space of time
 - Increase likelihood - increase time spent between acquiring locks
 
+? What is AtomicIntegerFieldUpdater? How does it differ from AtomicInteger? When might you use it?
+
+A reflection-based utility that enables atomic updates to designated volatile int fields of designated classes. This class is designed for use in atomic data structures in which several fields of the same node are independently subject to atomic updates.
+
+https://sites.google.com/site/javaduka/code-examples/concurrency/cas/java-util-concurrent/atomicintegerfieldupdater - lighter weight than AtomicInteger when only have a few writers and lots of readers. Also can do more than just increment!
+
+What would happen if the loop within the “dining philosophers” implementation
+that uses condition variables was replaced with a simple if statement?
+What failure modes might you see? What would happen if the call to signal()
+was replaced by signalAll()? What problems (if any) would this cause?

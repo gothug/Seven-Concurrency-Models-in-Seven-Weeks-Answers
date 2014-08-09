@@ -37,3 +37,7 @@ Icon
 
 # Intellij folders
 **.idea
+**.iml
+
+# Java stuff
+**target
